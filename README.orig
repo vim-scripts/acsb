@@ -43,21 +43,23 @@ Copy this file into ~/.vim/plugins/
 
 Usage:
 ---------------
-Set up a cscope connection (e.g. with autoload_cscope.vim ;))
+Set up a cscope connection (e.g. with acsb_autoload_cscope.vim ;))
 
 Keybindings: The 'symbol' is the word under the cursor.
 You may change these bindings below in this script.
-Ctrl+F1 - Find symbol definition
-Ctrl+F2 - Find functions called by the symbol
-Ctrl+F3 - Find functions calling the symbol
-Ctrl+F4 - Find symbol as text
-Ctrl+F6 - Find symbol as egrep pattern
-Ctrl+F7 - Find symbol as a file
-Ctrl+F8 - Find files including symbol
+Alt+1 - Find symbol references
+Alt+2 - Find symbol definition
+Alt+3 - Find functions called by the symbol
+Alt+4 - Find functions calling the symbol
+Alt+5 - Find symbol as text
+Alt+6 - Find symbol as egrep pattern
+Alt+7 - Find symbol as a file
+Alt+8 - Find files including symbol
 Alt+Left - Jump to the previous tag in the tag stack
 Alt+Right - Jump to a most recent tag in the tag stack
 Ctrl+Down - Jump to the next result in the active query
 Ctrl+Up - Jump to the previous result in the active query
+Ctrl+R - Rebuild database
 
 Ctrl+q - All query results are put into the [ACSB] buffer.
 If a query results in more than one matches then the [ACSB] buffer
