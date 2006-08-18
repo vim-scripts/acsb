@@ -1,0 +1,55 @@
+#!/bin/sh
+# Usage: progname {--no-files|--yes-files} dir-of-file-in-srctree prefix1 prefix2 ... prefixN
+#
+# prefix will be prefixed to cscope.outr, e.g. prefix3/cscope.out
+
+if [ $# -lt 3 ]; then
+	echo "Usage: progname {--no-files|--yes-files} dir-of-file-in-srctree prefix1 [prefix2 ... prefixN]"
+	exit
+fi
+
+if [ $1 != "--no-files" -a $1 != "--yes-files" ]; then
+	echo "Usage: progname {--no-files|--yes-files} dir-of-file-in-srctree prefix1 [prefix2 ... prefixN]"
+	exit
+fi
+
+FILESCMD=$1
+DIR=$2
+if [[ -z $2 ]]; then
+	DIR=`pwd`
+fi
+
+DBDIR=""
+cd $DIR
+shift
+shift
+while [ $DIR != "/" ]; do
+	for arg; do
+		if [ -f ./$arg/cscope.out ]; then
+			DBDIR="$DIR"
+			CDDIR="$arg"
+			break
+		fi
+	done
+	if [ ! -z $DBDIR ]; then
+		break
+	fi
+	cd ..
+	DIR=`pwd`
+done
+
+if [ $DIR = "/" ]; then
+	exit
+fi
+
+if [ -x /usr/bin/zenity ]; then
+	codelight-make-data $FILESCMD --yes-db $DIR $CDDIR
+else
+	echo $CDDIR $DIR
+	if [[ -x /usr/bin/xterm ]]; then
+		xterm -e "codelight-make-data $FILESCMD --yes-db $DIR $CDDIR"
+	elif [[ -x /usr/bin/rxvt ]]; then
+		rxvt -e "codelight-make-data $FILESCMD --yes-db $DIR $CDDIR"
+	fi
+fi
+

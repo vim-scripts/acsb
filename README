@@ -1,0 +1,14 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1268
+
+A cscope frontend supporting
+o Multiple queries
+   It uses a buffer for listing the results of cscope queries.
+o Multiple tag stacks
+   Supports multiple tag stacks for serious code analyzis.
+   The stacks are shown in a buffer.
+More information (e.g. usage) can be found at the beginning of the script file.
+It uses its own tag stack and not the one that vim has built in. It means that
+if you use both vim's ctags support and this script in parallel the two tag stacks
+will not interfere.
+
+

@@ -1,0 +1,79 @@
+#!/bin/sh
+# Author: Gabor Fekete
+# Date: 2006.03.10, Fri
+# Desc: Creates a csope database for the CodeLight gedit plug-in.
+#       The cscope.* files will be stored in srcdir/data-dir
+# Usage: progname {--no-files | --yes-files} {--no-db | --yes-db} srcdir [data-dir]
+
+if [ $# -lt 3 ]; then
+	echo "$0 {--no-files | --yes-files} {--no-db | --yes-db} srcdir [data-dir]"
+	exit
+fi
+
+if [ -z $4 ]; then
+	CDDIR="./"
+else
+	CDDIR="$4/"
+fi
+
+if [ -x /usr/bin/zenity ]; then
+	WD=`pwd`
+	RES=`zenity --title "$WD is" --list --radiolist --column Select --column Type FALSE "Kernel source" TRUE "User space code"`
+	case $RES in
+		"Kernel source")
+			BULDARG="./ kernel"
+			CSARG="-kbq"
+			;;
+		"User space code")
+			CSARG="-bq"
+			;;
+		*)
+			exit 1
+			;;
+	esac
+	ZENITY1="| tee ${CDDIR}cscope.files | zenity --title 'Building csope.files' --progress --auto-close"
+	ZENITY2="| zenity --title 'Building csope.out' --progress --auto-close"
+else
+	echo Type of the code in `pwd`
+	echo 1. Kernel
+	echo 2. User space
+	echo ---------------
+	echo -n Make a choice:
+	read choice
+	ZENITY1=" > ${CDDIR}cscope.files"
+	case $choice in
+		"1")
+			BULDARG="./ kernel"
+			CSARG="-kbq"
+			;;
+		"2")
+			CSARG="-bq"
+			;;
+		*)
+			exit 1
+			;;
+	esac
+fi
+
+cd $3
+if [ ! -z $CDDIR ]; then
+	mkdir -p $CDDIR
+fi
+#echo build_linux_cscope_files $BUILDARG $ZENITY1
+#echo cscope -i$DIR/cscope.files $CSARG $ZENITY2
+
+if [ $1 != "--no-files" ]; then
+	echo Building cscope file list...
+	eval codelight-print-cscope.files $BUILDARG $ZENITY1
+fi
+shift
+if [ $1 != "--no-db" ]; then
+	echo Bulding cscope database...
+	eval cscope -i${CDDIR}cscope.files $CSARG $ZENITY2
+fi
+
+# Move cscope.* into $CDDIR
+if [ $CDDIR != "./" ]; then
+	mv cscope.* $CDDIR
+fi
+

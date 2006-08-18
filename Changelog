@@ -1,0 +1,20 @@
+Changelog:
+
+2006.08.xx
+	o Fix: don't rebuild the database when not needed
+	o Mod: Use strings instead of numbers for ACSBfindsym.
+	o Add: support for separate cscope.out directory in the source tree
+	       E.g. If your source code is at /home/joe/code, then you can have
+	       the cscope.* files built in /home/joe/code/cscope-data/.
+	o Add: C-R rebuilds the database.
+
+2005.05.02
+	o syntax highlight changes in the buffers
+
+2005.05.01-2
+	o bugfix: removed bad reference to old stack jumping
+	  function
+	o bugfix: adjust stack on query deletion
+	o Text message modifictaions
+	o Allow to show the ACSB buffers from each other
+

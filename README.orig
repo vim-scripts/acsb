@@ -1,0 +1,130 @@
+Credits
+============
+I would like to thank the ideas these people gave me through their
+scripts:
+o Michael Conrad Tilsra, autoload_cscope.vim
+o Jeff Lanzarotta, bufexplorer.vim
+o Shivakumar T, cscope_win.vim
+o Elad Lahav, The author of KScope, for the (implicit) encouragement.
+
+Files
+===============
+
+acsb.vim
+    VIM plugin for cscope.
+
+acsb_autoload_cscope.vim
+    Michael Conrad Tilsra's vim plugin modified and used by acsb.vim
+
+codelight*
+    Bash scripts used by acsb.vim
+    Put them in your path!
+
+
+acsb.vim
+=======================
+It is a script to interface with cscope.
+
+Features
+---------------
+o Multi queries
+  It uses a buffer for listing the results of cscope queries.
+o Multi tag stacks
+  Supports multiple tag stacks for serious code analyzis.
+  The stacks are shown in a buffer.
+
+It can be used parallel with the normal cscope frontend of
+vim because they use different settings, key bindings and
+tag stacks.
+
+Installation:
+---------------
+Copy this file into ~/.vim/plugins/
+
+Usage:
+---------------
+Set up a cscope connection (e.g. with autoload_cscope.vim ;))
+
+Keybindings: The 'symbol' is the word under the cursor.
+You may change these bindings below in this script.
+Ctrl+F1 - Find symbol definition
+Ctrl+F2 - Find functions called by the symbol
+Ctrl+F3 - Find functions calling the symbol
+Ctrl+F4 - Find symbol as text
+Ctrl+F6 - Find symbol as egrep pattern
+Ctrl+F7 - Find symbol as a file
+Ctrl+F8 - Find files including symbol
+Alt+Left - Jump to the previous tag in the tag stack
+Alt+Right - Jump to a most recent tag in the tag stack
+Ctrl+Down - Jump to the next result in the active query
+Ctrl+Up - Jump to the previous result in the active query
+
+Ctrl+q - All query results are put into the [ACSB] buffer.
+If a query results in more than one matches then the [ACSB] buffer
+is shown automatically.
+Keybindings for the [ACSB] buffer:
+d - delete query
+ENTER - jump to query result
+z - open/close fold
+Z - open close all folds
+q - close [ACSB] buffer
+Ctrl+q - close [ACSB] buffer
+
+Ctrl+p - Show the tag stacks
+Keybinsings for the [ACSB-Stacks] buffer:
+d - delete stack
+n - create a new empty stack
+N - create a new named empty stack
+a - make stack the active one
+ENTER - make stack the active one and position the stack pointer
+        to the selected entry.
+z - open/close fold
+Z - open close all folds
+q - close [ACSB-Stacks] buffer
+Ctrl+p - close [ACSB-Stacks] buffer
+
+If a query results in only one match then the [ACSB] buffer is not
+shown and the result is immediately jumped at.
+
+LIMITATIONS:
+---------------
+o It allows to use only one cscope connection.
+o The syntax highlighting of the [ACSB] and [ACSB-Stacks] buffers
+  is broken.
+o The cscope database MUST be named as 'cscope.out'.
+If you fix these, please send me the result or upload it to
+somewhere because I am interested.
+
+
+acsb_autoload_cscope.vim
+=======================================
+
+This plugin is used by acsb.vim to find the cscope.out database
+automatically.
+For example, if you have your source code under /home/joe/code then
+you can have the cscope database files in
+o /home/joe/code
+o /home/joe/code/cscope-data
+
+To add more possible places, edit acsb_autoload_cscope.vim. For example
+to add /home/joe/code/goodstuff, add the following:
+
+let s:cscope_prefix_4 = "goodstuff/"
+
+and increase s:cscope_prefix_count by 1, like:
+
+let s:cscope_prefix_count = 5
+
+Installation
+---------------
+Copy this file into ~/.vim/plugins/
+
+codelight-makedata
+======================
+Use this script from the command line to create cscope database files.
+For example:
+> cd /home/joe/code
+> codelight-makedata --yes-files --yes-db ./ cscope-data
+will create:
+/home/joe/code/cscope-data/cscope.*
+
